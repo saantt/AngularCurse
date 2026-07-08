@@ -1,0 +1,12 @@
+services:
+  angular-app:
+    build: .
+    image: angular-curso
+    container_name: angular-curso
+    working_dir: /app
+    volumes:
+      - ./mi-app-angular:/app
+      - /app/node_modules
+    ports:
+      - "4200:4200"
+    command: sh -c "npm install && ng serve --host 0.0.0.0 --poll 2000"
