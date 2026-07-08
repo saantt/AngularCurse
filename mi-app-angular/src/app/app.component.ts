@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'mi-app-angular';
+  user: string[] = ['Alice', 'Bob', 'Charlie', 'David', 'Eve'];
+  
+  visible: boolean = false;
+
+  setVisible() {
+    this.visible = this.visible ? false : true;
+  }
 }
