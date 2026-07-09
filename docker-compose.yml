@@ -1,12 +1,35 @@
 services:
-  angular-app:
+  angular:
     build: .
-    image: angular-curso
-    container_name: angular-curso
-    working_dir: /app
+    image: angular-node20
+    container_name: angular-dev
+
+    working_dir: /app/frontend
+
     volumes:
-      - ./mi-app-angular:/app
-      - /app/node_modules
+      - ./frontend:/app/frontend
+
     ports:
       - "4200:4200"
-    command: sh -c "npm install && ng serve --host 0.0.0.0 --poll 2000"
+
+    stdin_open: true
+    tty: true
+
+    environment:
+      NG_CLI_ANALYTICS: "false"
+      CI: "true"
+
+    command: >
+      sh -c "
+      if [ ! -f package.json ]; then
+        echo 'Creando proyecto Angular';
+        cd /app;
+        ng new frontend --routing --style=css --skip-git --defaults --interactive=false;
+      fi;
+
+      cd /app/frontend;
+
+      npm install;
+
+      ng serve --host 0.0.0.0 --poll=2000;
+      "
