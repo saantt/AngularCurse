@@ -4,20 +4,19 @@
             <h2>FACTURA</h2>
         </div>
         <div class="card-body">
-            <app-invoice-view [id]="invoice.id" [name]="invoice.name"></app-invoice-view>
+            <app-invoice-view [id]="invoice.id" [name]="invoice.name"/>
             <div class="row my-3">
                 <div class="col">
-                    <app-client-view [client]="invoice.client"></app-client-view>
+                    <app-client-view [client]="invoice.client"/>
 
                 </div>
                 <div class="col">
-                    <app-company-view [company]="invoice.company"></app-company-view>
+                    <app-company-view [company]="invoice.company"/>
                 </div>
             </div>
-
-
-            <app-list-items [item]="invoice.items"></app-list-items>
-
+            <app-list-items [item]="invoice.items" (removeEventEmitter)="removeItems($event)"/>
+            <app-total [total]="invoice.total"/>
+            <app-form-item (addItemEventEmitter)="addItem($event)"/>
         </div>
     </div>
 </div>

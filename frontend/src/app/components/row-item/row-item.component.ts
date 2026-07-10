@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Item } from '../../models/item';
 
 @Component({
@@ -9,5 +9,9 @@ import { Item } from '../../models/item';
 })
 export class RowItemComponent {
   @Input() items!: Item;
-
+  @Output() removeEventEmmiter: EventEmitter<number> = new EventEmitter(); 
+  
+  onRemove(id: number) {
+  this.removeEventEmmiter.emit(id);
+  }
 }
