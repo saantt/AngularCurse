@@ -17,17 +17,54 @@ export class CartAppComponent implements OnInit {
 
   items: CartItem[] = [];
 
+  total: number = 0;
+  showCart : boolean = false;
+
   constructor(private service: ProductService) { }
 
   ngOnInit(): void {
     this.products = this.service.findAll();
+    this.items = JSON.parse(sessionStorage.getItem('cart')!) || [];
+    this.calculateTotal();
   }
-  onAddCart(product: Product) {
-    this.items = [...this.items, { product: { ...product }, quantity: 1 }]
+  onAddCart(product: Product): void {
+    const hasItem = this.items.find(item => item.product.id === product.id)
+    if (hasItem) {
+      this.items = this.items.map(item => {
+        if (item.product.id === product.id) {
+          return {
+            ...item,
+            quantity: item.quantity + 1
+          }
+        }
+        return item;
+      })
+
+    } else {
+
+      this.items = [...this.items, { product: { ...product }, quantity: 1 }]
+    }
+    this.calculateTotal();
+    this.saveSession();
   }
 
-  getTotal(): number {
-    return this.products.reduce((sum, product) => sum + product.price, 0);
+  onDeleteCart(id: number): void {
+    this.items = this.items.filter(item => item.product.id !== id);
+    this.calculateTotal();
+    this.saveSession();
+
+  }
+
+  calculateTotal(): void {
+    this.total = this.items.reduce((accumulator, item) => accumulator + item.quantity * item.product.price, 0)
+  }
+
+  saveSession(): void {
+    sessionStorage.setItem('cart', JSON.stringify(this.items));
+  }
+
+  openCart(): void {
+    this.showCart = !this.showCart
   }
 
 }
